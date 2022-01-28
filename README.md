@@ -1,6 +1,7 @@
 
 # IdentityServer4 And Clients
 **This project was selected to win a Congressional App Challenge award in November of 2020**
+
 This project combines an Identityserver4 authority and endpoint for external sign in, for use with ASP.NET.
 The csproj files represent single projects, that I then combine into a single .sln for use in visual studio (not included in the repos.) To make this, either open a csproj file in visual studio or type dotnet new sln in the working directory. Unfortunately, I had to effectively commit this entire project as one massive commit, to prevent the sensative info from showing up in the history. On my private repository, this project started on July 22, 2020 and won a congressional app award in November of 2020.
 ### ExampleClient
