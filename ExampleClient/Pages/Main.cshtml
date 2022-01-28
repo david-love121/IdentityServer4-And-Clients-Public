@@ -1,0 +1,119 @@
+﻿@page "/main"
+@using System.Net.Http
+@using IdentityModel.Client
+@model PrivacyModel
+@{
+    DepositBox DBox = new DepositBox();
+    WithdrawBox WBox = new WithdrawBox();
+    DatabaseFunctions DBF = new DatabaseFunctions();
+    await DBF.CheckForPreviousEntry(User.FindFirst("sub").Value.ToString());
+    var CurrentBal = await DBF.GetCurrentBal(User.FindFirst("sub").Value.ToString());
+    ViewData["Title"] = "Deposit/Withdraw";
+    var user = HttpContext.User;
+    var client = new HttpClient();
+    string token = "";
+    var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
+    if (disco.IsError)
+    {
+        Console.WriteLine(disco.Error);
+        return;
+    }
+    var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+    {
+        Address = disco.TokenEndpoint,
+
+        ClientId = "client",
+        ClientSecret = "secret",
+        Scope = "api1"
+    });
+    if (tokenResponse.IsError)
+    {
+        Console.WriteLine(tokenResponse.Error);
+        return;
+    }
+    Console.WriteLine(tokenResponse.Json);
+    token = tokenResponse.AccessToken.ToString();
+
+}
+@functions {
+
+}
+<h1></h1>
+
+<p class="display-4 text-xl-center"></p>
+<body class="bg-light" style="">
+    <div class="text-center">
+        <p class="display-3">Hello, @User.FindFirst("given_name").Value.ToString()!</p>
+        <div class="display-4">
+            <p id="CBB">Your current Balance is $@CurrentBal</p>
+        </div>
+        <div class="container w-25 rounded justify-content-center h-100 px-1" style="background-color:white; border:solid 1px #686868; padding-top:20px; padding-bottom:160px; display: inline-block; *display: inline; zoom: 1; vertical-align: top;">
+            <p style="padding-top:15px">Would you like to make a deposit?</p>
+            <form class="" method="POST" name="Depos" id="DF">
+                <input id="In2" asp-for="@DBox.DepositValue" />
+                <input id="UID" type="hidden" name="UID" value="@User.FindFirst("sub").Value.ToString()" />
+                <input id="CurrBal" type="hidden" name="CurrBal" value="@CurrentBal" />
+            </form>
+            <button id="DButt" class="btn btn-primary" type="submit" form="DF" value="Submit">Submit</button>
+        </div>
+        <div class="container w-25 rounded justify-content-center h-100 px-1" style="background-color: white; border: solid 1px #686868; padding-top: 20px; padding-bottom: 160px; display: inline-block; *display: inline; zoom: 1; vertical-align: top;">
+            <p style="padding-top:15px">Would you like to make a withdrawl?</p>
+            <form class="" asp-controller="DB" method="POST" id="WF">
+                <input id="In1" asp-for="@WBox.WithdrawlValue" />
+                <input id="WUID" type="hidden" name="UID" value="@User.FindFirst("sub").Value.ToString()" />
+                <input id="WCurrBal" type="hidden" name="CurrBal" value="@CurrentBal" />
+            </form>
+            <button id="WButt" class="btn btn-primary" type="submit" form="WF" value="Submit">Submit</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $("#DButt").click(function e(a) {
+
+            a.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "DB/Deposit",
+                data: {
+                    "UID": $("#UID").val(),
+                    "DBox.DepositValue": $("#In2").val(),
+
+                    "CurrBal": $("#CurrBal").val()
+                },
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function (response) {
+                        console.log("Here");
+                        location.reload();
+
+                    }
+                }
+            });
+        });
+        $("#WButt").click(function f(a) {
+
+            a.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "DB/Withdrawl",
+                data: {
+                    "UID": $("#WUID").val(),
+                    "WBox.WithdrawlValue": $("#In1").val(),
+
+                    "CurrBal": $("#WCurrBal").val()
+                },
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function (response) {
+                        console.log("Here");
+                        location.reload();
+
+                    }
+                }
+            });
+        });
+    </script>
+</body>

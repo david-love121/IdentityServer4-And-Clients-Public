@@ -1,0 +1,11 @@
+﻿@page "/Signout"
+@using IdentityServer4;
+@using Microsoft.AspNetCore.Authentication;
+@model ExampleClient.Pages.SignoutModel
+@{
+   
+}
+<p class="display-4">Would you like to signout?</p>
+<form action="/DB/Logout">
+    <button type="submit" class="btn btn-primary">Yes</button>
+</form>

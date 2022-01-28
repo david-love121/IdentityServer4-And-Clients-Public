@@ -1,0 +1,18 @@
+﻿@page "/Signout"
+@using IdentityServer4;
+@using Microsoft.AspNetCore.Authentication;
+@model IDSEmpty.Pages.SignoutModel
+@{
+    ViewData["Title"] = "Signout";
+    string[] S = Environment.GetCommandLineArgs();
+    var returnUrl = S[1];
+    var SignoutUrl = S[2];
+    await HttpContext.SignOutAsync();
+    
+
+}
+<p class="display-4">Signing you out...
+<p />
+<meta http-equiv="refresh" content="1; URL=@SignoutUrl" />
+
+

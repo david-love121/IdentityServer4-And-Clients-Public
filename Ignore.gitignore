@@ -1,0 +1,8 @@
+ExampleClient/bin/
+ExampleClient/obj/
+IDS4LoginEndpoint/IDS4LoginEndpoint/bin/
+IDS4LoginEndpoint/IDS4LoginEndpoint/obj/
+IDS4LoginEndpoint/.vs/
+IDSAuthority/.vs/
+IDSAuthority/bin/
+IDSAuthority/obj/

@@ -1,0 +1,113 @@
+﻿@page
+@using IDSEmpty.sakila
+@model IDSEmpty.Pages.SigninModel
+@{
+    CSATMContext context = new CSATMContext();
+    IDSEmpty.LoginForm LF = new IDSEmpty.LoginForm();
+    ViewData["Title"] = "Signin";
+    string[] S = Environment.GetCommandLineArgs();
+    var returnUrl = S[1];
+}
+
+
+<div>
+    <p class="display-4 text-center">Sign up for your Keychain account here!</p>
+    <p class="text-center">(All info can be fake as this is just a demo.)</p>
+    <div class="border text-cente justify-content-center" style="width: 350px; height:360px; margin:0 auto;">
+        <form asp-controller="Signin" class="text-center" style="padding-bottom:30px; padding-top:30px;">
+            <div style="padding-bottom:10px">
+                <input id="Email" placeholder="Email" asp-for="@LF.Email" />
+            </div>
+            <div style="padding-bottom: 10px;">
+                <input id="Username" placeholder="Username" asp-for="@LF.Username" />
+            </div>
+            <div style="padding-bottom:10px">
+                <input id="Name" type="text" placeholder="First name" asp-for="@LF.Name" />
+            </div>
+            <div style="padding-bottom: 10px;">
+                <input id="Pass" type="password" asp-for="@LF.Password" class="form1" placeholder="Password" style="margin:auto;" />
+            </div>
+
+            <button id="SignupButton" type="submit" class="btn btn-primary">Sign up</button>
+            <small class="form-text text-muted">Already have an account? Sign in <a href="/Account/Login">here.</a></small>
+            <div style="padding-bottom:10px; padding-top:10px; padding-left:15px; padding-right:15px">
+                <p class="alert alert-danger" id="Test1">Someone is already using that username or email.</p>
+            </div>
+            <div style="padding-bottom:10px; padding-top:10px; padding-left:15px; padding-right:15px">
+                <p class="alert alert-danger" id="Test2">We encountered an error. Please refresh the page and try again.</p>
+            </div>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type="text/javascript">
+
+                $("#SignupButton").click(function e(a) {
+                    var serviceURL = '@returnUrl';
+                    a.preventDefault();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Signup",
+                        data: {
+                            "LF.Username": $("#Username").val(),
+                            "LF.Email": $('#Email').val(),
+                            "LF.Name": $("#Name").val(),
+                            "LF.Password": $("#Pass").val()
+                        },
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        dataType: "json",
+                        statusCode: {
+                            200: function () {
+                                console.log("Here");
+                                Login();
+                            },
+                            300: function () {
+                                var x = document.getElementById("Test1")
+                                x.style.display = "block";
+                            },
+                            500: function () {
+                                console.log("500");
+                                var x = document.getElementById("Test2")
+                                x.style.display = "block";
+                            }
+                        }
+                    });
+                });
+                function Login() {
+                    $.ajax({
+                        type: "POST",
+                        url: "/LoginForm",
+                        data: {
+                            "LF.Username": $("#Username").val(),
+                            "LF.Password": $("#Pass").val()
+                        },
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        dataType: "json",
+                        statusCode: {
+                            200: function () {
+                                console.log("200");
+                                window.location.replace("@returnUrl");
+                            },
+                            401: function () {
+                                console.log("401");
+                                var x = document.getElementById("Test1")
+                                x.style.display = "block";
+                            },
+                            500: function () {
+                                console.log("500");
+                                var x = document.getElementById("Test2")
+                                x.style.display = "block";
+                            }
+                        }
+                    });
+                }
+            </script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var text = document.getElementById("Test1");
+                    text.style.display = "none";
+                    var text = document.getElementById("Test2");
+                    text.style.display = "none";
+                });
+            </script>
+        </form>
+        
+    </div>
+</div>
