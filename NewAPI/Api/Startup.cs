@@ -19,16 +19,7 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("https://localhost:7001", "https://localhost:6001", "https://localhost:5001")
-                                       .AllowAnyHeader();
-                                      
-                                  });
-            });
+           
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
@@ -49,7 +40,7 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
-           app.UseCors();
+          
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

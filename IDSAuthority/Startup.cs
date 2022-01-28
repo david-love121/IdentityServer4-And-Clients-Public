@@ -40,7 +40,7 @@ namespace IDSEmpty
         {
 
             // uncomment, if you want to add an MVC-based UI
-            string connectionString = "server = localhost; user = root; database = CSATM; port = 3306; password = SamSQL1555";
+            string connectionString = "Redacted";
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddMvc();

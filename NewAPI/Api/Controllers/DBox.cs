@@ -12,7 +12,7 @@ namespace Api
 {
     public class DatabaseFunctions : ControllerBase
     {
-        string connStr = "server = localhost; user = root; database = CSATM; port = 3306; password = SamSQL1555";
+        string connStr = "Redacted";
         MySqlConnection conn;
        
         public DatabaseFunctions()

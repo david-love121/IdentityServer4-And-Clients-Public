@@ -24,7 +24,7 @@ namespace IDSEmpty.sakila
             {
 
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySQL("server = localhost; user = root; database = CSATM; port = 3306; password = SamSQL1555");
+                optionsBuilder.UseMySQL("Redacted");
 
             }
         }
