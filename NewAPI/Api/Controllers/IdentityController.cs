@@ -13,7 +13,7 @@ namespace Api.Controllers
     public class IdentityController : ControllerBase
     {
         DatabaseFunctions DBF = new DatabaseFunctions();
-        static string connStr = "server = localhost; user = root; database = CSATM; port = 3306; password = SamSQL1555";
+        static string connStr = "server = localhost; user = root; database = CSATM; port = 3306; password = *";
         MySqlConnection conn = new MySqlConnection(connStr);
         [Route("identity")]
         [HttpGet]
